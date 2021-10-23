@@ -18,7 +18,8 @@ public class Game implements Runnable {
     @Override
     public void run() {
         displayGrid.fireUp();
-
+        displayGrid.initializeDisplay();
+        return;
         // for (int step = 1; step < WIDTH / 2; step *= 2) {
         //     for (int i = 0; i < WIDTH; i += step) {
         //         for (int j = 0; j < HEIGHT; j += step) {
@@ -37,14 +38,16 @@ public class Game implements Runnable {
 
     public void runGame() throws Exception{
 
-        Game test = new Game(WIDTH, HEIGHT);
-        Thread testThread = new Thread(test);
+        Game game = new Game(WIDTH, HEIGHT);
+        Thread testThread = new Thread(game);
         testThread.start();
 
-        test.keyStrokePrinter = new Thread(new KeyStrokePrinter(displayGrid));
-        test.keyStrokePrinter.start();
+        game.keyStrokePrinter = new Thread(new KeyStrokePrinter(displayGrid));
+        game.keyStrokePrinter.start();
+
+        game.keyStrokePrinter.run();
 
         testThread.join();
-        test.keyStrokePrinter.join();
+        game.keyStrokePrinter.join();
     }
 }

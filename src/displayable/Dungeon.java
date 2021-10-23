@@ -18,6 +18,9 @@ public class Dungeon {
 
     private List<Passage> passages = new ArrayList<Passage>();
 
+    public List<Room> getRooms(){return rooms;}
+    public List<Passage> getPassages(){return passages;}
+
     public int getTopHeight(){return this.topHeight;}
     public int getGameHeight(){return this.gameHeight;}
     public int getBottomHeight(){return this.bottomHeight;}

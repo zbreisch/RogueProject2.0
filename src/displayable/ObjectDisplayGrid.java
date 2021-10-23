@@ -39,6 +39,7 @@ public class ObjectDisplayGrid extends JFrame implements KeyListener, InputSubje
         super.addKeyListener(this);
         inputObservers = new ArrayList<>();
         super.repaint();
+        terminal.addKeyListener(this);
     }
 
     @Override

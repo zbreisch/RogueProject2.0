@@ -14,6 +14,9 @@ public class Item extends Displayable{
     private int itemIntValue;
     private List<Action> itemActions = new ArrayList<Action>();
 
+    public int getPosX(){return this.posX;}
+    public int getPosY(){return this.posY;}
+
     public void setName(String _name){name = _name;}
 
     public void setRoom(int _room){room = _room;}

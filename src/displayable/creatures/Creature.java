@@ -10,8 +10,8 @@ public class Creature extends Displayable{
    private int room;
    private int serial;
    private int visible;
-   private int posX;
-   private int posY;
+   protected int posX;
+   protected int posY;
    private int hp;
    private int hpMoves;
    private int maxHit;

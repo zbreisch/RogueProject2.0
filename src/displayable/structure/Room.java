@@ -14,9 +14,51 @@ public class Room extends Displayable{
     private int posY;
     private int width;
     private int height;
-    
+    private Displayable[][] displayableGrid;
     private List<Creature> creatures = new ArrayList<Creature>();
     private List<Item> items = new ArrayList<Item>();
+
+    public Displayable[][] getDisplayableGrid()
+    {
+        this.generateGrid();
+        return displayableGrid;
+    }
+    private void generateGrid()
+    {
+        displayableGrid = new Displayable[this.width][this.height];
+        int i;
+        int j;
+        for(i = 0; i < this.width; i++)
+        {
+            for(j = 0; j < this.height; j++)
+            {
+                if(j == 0 || j == (this.height - 1) || i == 0 || i == (this.width - 1))
+                {
+                    displayableGrid[i][j] = new RoomWall();
+                }
+                else
+                {
+                    displayableGrid[i][j] = new RoomFloor();
+                }
+            }
+        }
+        for(Item itm : this.items)
+        {
+            i = itm.getPosX() - this.posX;
+            j = itm.getPosY() - this.posY;
+            displayableGrid[i][j] = itm;
+        }
+        for(Creature c : this.creatures)
+        {
+            i = c.getPosX() - this.posX;
+            j = itm.getPosy() - this.posY;
+        }
+
+    }
+    public int getPosX(){return this.posX;}
+    public int getPosY(){return this.posY;}
+    public int getWidth(){return this.width;}
+    public int getHeight(){return this.height;}
 
     public void addCreature(Creature c) {creatures.add(c);}
 
