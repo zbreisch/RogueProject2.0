@@ -7,7 +7,7 @@ import src.displayable.item.Item;
 
 import java.util.*;
 
-public class Room extends Displayable{
+public class Room extends Displayable implements PlayerArea{ //Added
     private int room;
     private int visible;
     private int posX; // (x,y) of top left corner of room
@@ -23,6 +23,12 @@ public class Room extends Displayable{
         this.generateGrid();
         return displayableGrid;
     }
+
+    public Boolean isValidMove(int x, int y) // Added
+    {
+        return false;
+    }
+
     private void generateGrid()
     {
         displayableGrid = new Displayable[this.width][this.height];
@@ -51,7 +57,7 @@ public class Room extends Displayable{
         for(Creature c : this.creatures)
         {
             i = c.getPosX() - this.posX;
-            j = itm.getPosy() - this.posY;
+            j = c.getPosy() - this.posY;
         }
 
     }

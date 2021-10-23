@@ -2,12 +2,17 @@ package src.displayable.structure;
 
 import java.util.*;
 
-public class Passage {
+public class Passage implements PlayerArea{  // Added implements
     private int room1;
     private int room2;
     private int visible;
     private List<Integer> posXs = new ArrayList<Integer>();
     private List<Integer> posYs = new ArrayList<Integer>();
+
+    public Boolean isValidMove(int x, int y) //Added method
+    {
+        return false;
+    }
 
     public void addPosX(int posX)
     {
