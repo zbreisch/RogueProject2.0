@@ -10,7 +10,7 @@ import java.util.*;
 public class Room extends Displayable{
     private int room;
     private int visible;
-    private int posX;
+    private int posX; // (x,y) of top left corner of room
     private int posY;
     private int width;
     private int height;

@@ -1,6 +1,7 @@
 package src;
 
 import src.displayable.Dungeon;
+import src.displayable.Game;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,7 +12,7 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.SAXException;
 
 public class Test {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception{
 
 	// check if a filename is passed in.  If not, print a usage message.
 	// If it is, open the file
@@ -46,8 +47,14 @@ public class Test {
             Dungeon dungeon = handler.getDungeon();
 	    // print out all of the students.  This will change depending on 
 	    // what kind of XML we are parsing
-            System.out.println(dungeon.toString());
+            //System.out.println(dungeon.toString());
 	// these lines should be copied exactly.
+            int height = dungeon.getTopHeight() + dungeon.getBottomHeight() + dungeon.getGameHeight();
+            Game game = new Game(dungeon.getWidth(), height);
+            game.runGame();
+            // Thread gameThread = new Thread(game);
+
+            // game.keyStrokePrinter = new Thread(new KeyStrokePrinter(game.getDisplayGrid()));
         } catch (ParserConfigurationException | SAXException | IOException e) {
             System.out.println(fileName);
             e.printStackTrace(System.out);
