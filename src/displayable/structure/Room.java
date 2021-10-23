@@ -29,6 +29,7 @@ public class Room extends Displayable implements PlayerArea{ //Added
         return false;
     }
 
+    //public Displayable getGrid(int x, int y){return this.displayableGrid[x][y];}
     private void generateGrid()
     {
         displayableGrid = new Displayable[this.width][this.height];
@@ -58,8 +59,8 @@ public class Room extends Displayable implements PlayerArea{ //Added
         {
             i = c.getPosX() - this.posX;
             j = c.getPosy() - this.posY;
+            displayableGrid[i][j] = c;
         }
-
     }
     public int getPosX(){return this.posX;}
     public int getPosY(){return this.posY;}
