@@ -137,7 +137,11 @@ public class DungeonXMLHandler extends DefaultHandler {
             bCreature = true;
             roomBeingParsed.addCreature(creatureBeingParsed);
         } else if (qName.equalsIgnoreCase("Player")) {
-            creatureBeingParsed = new Creature();
+            //creatureBeingParsed = new Creature();
+            Player player = new Player();
+            dungeon.setPlayer(player);
+            creatureBeingParsed = player;
+            
             creatureBeingParsed.setName(attributes.getValue("name"));
             creatureBeingParsed.setRoom(Integer.parseInt(attributes.getValue("room")));
             creatureBeingParsed.setSerial(Integer.parseInt(attributes.getValue("serial")));

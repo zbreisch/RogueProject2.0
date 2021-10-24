@@ -16,6 +16,7 @@ public class Item extends Displayable{
 
     public int getPosX(){return this.posX;}
     public int getPosY(){return this.posY;}
+    public String getName(){return this.name;}
 
     public void setName(String _name){name = _name;}
 

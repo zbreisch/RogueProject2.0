@@ -42,6 +42,8 @@ public class ObjectDisplayGrid extends JFrame implements KeyListener, InputSubje
         terminal.addKeyListener(this);
     }
 
+               
+
     @Override
     public void registerInputObserver(InputObserver observer) {
         if (DEBUG > 0) {
@@ -52,15 +54,12 @@ public class ObjectDisplayGrid extends JFrame implements KeyListener, InputSubje
 
     @Override
     public void keyTyped(KeyEvent e) {
-        if (DEBUG > 0) {
-            System.out.println(CLASSID + ".keyTyped entered" + e.toString());
-        }
-        KeyEvent keypress = (KeyEvent) e;
-        notifyInputObservers(keypress.getKeyChar());
+
     }
 
     private void notifyInputObservers(char ch) {
         for (InputObserver observer : inputObservers) {
+            System.out.println("ya");
             observer.observerUpdate(ch);
             if (DEBUG > 0) {
                 System.out.println(CLASSID + ".notifyInputObserver " + ch);
@@ -76,6 +75,11 @@ public class ObjectDisplayGrid extends JFrame implements KeyListener, InputSubje
     // we have to override, but we don't use this
     @Override
     public void keyReleased(KeyEvent e) {
+        if (DEBUG > 0) {
+            System.out.println(CLASSID + ".keyTyped entered" + e.toString());
+        }
+        KeyEvent keypress = (KeyEvent) e;
+        notifyInputObservers(keypress.getKeyChar());
     }
 
     public final void initializeDisplay() {
@@ -94,6 +98,26 @@ public class ObjectDisplayGrid extends JFrame implements KeyListener, InputSubje
         } else {
             System.out.println(CLASSID + ".ObjectDisplayGrid(...) requestFocusInWindow FAILED");
         }
+    }
+
+    public void setObjectGrid(Char[][] newGrid)
+    {
+        this.objectGrid = newGrid;
+    }
+
+    public void refreshDisplay(Char[][] newGrid)
+    {
+        for(int i = 0; i < width; i++)
+        {
+            for(int j = 0; j < height; j++)
+            {
+                if(newGrid[i][j] != this.objectGrid[i][j])
+                {
+                    writeToTerminal(i,j);
+                }
+            }
+        }
+        this.objectGrid = newGrid;
     }
 
     public void addObjectToDisplay(Char ch, int x, int y) {

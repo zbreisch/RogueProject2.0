@@ -2,7 +2,7 @@ package src.displayable;
 
 import src.displayable.structure.Room;
 import src.displayable.structure.Passage;
-import src.displayable.creatures.Creature;
+import src.displayable.creatures.*;
 import src.displayable.item.Item;
 
 import java.util.*;
@@ -13,10 +13,24 @@ public class Dungeon {
     private int topHeight;
     private int gameHeight;
     private int bottomHeight;
-
+    private Player player;
     private List<Room> rooms = new ArrayList<Room>();
-
     private List<Passage> passages = new ArrayList<Passage>();
+
+
+    public String getTopText()
+    {
+        String str = "HP: ";
+        str += Integer.toString(player.getHP());
+        str += " Score: ";
+        str += Integer.toString(player.getScore());
+        return str;
+    }
+
+    public String getBottomText()
+    {
+        return player.getBottomText();
+    }
 
     public List<Room> getRooms(){return rooms;}
     public List<Passage> getPassages(){return passages;}
@@ -25,6 +39,9 @@ public class Dungeon {
     public int getGameHeight(){return this.gameHeight;}
     public int getBottomHeight(){return this.bottomHeight;}
     public int getWidth(){return this.width;}
+    public Player getPlayer(){return player;}
+
+    public void setPlayer(Player p){player = p;}
 
     public void addRoom(Room r)
     {

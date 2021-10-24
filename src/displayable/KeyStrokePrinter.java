@@ -1,5 +1,6 @@
 package src.displayable;
 
+import src.displayable.creatures.*;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -9,10 +10,25 @@ public class KeyStrokePrinter implements InputObserver, Runnable {
     private static String CLASSID = "KeyStrokePrinter";
     private static Queue<Character> inputQueue = null;
     private ObjectDisplayGrid displayGrid;
+    private Player player;
+    private static KeyStrokePrinter keyPrinter = null;
 
-    public KeyStrokePrinter(ObjectDisplayGrid grid) {
+    private KeyStrokePrinter(ObjectDisplayGrid grid, Player p) {
         inputQueue = new ConcurrentLinkedQueue<>();
         displayGrid = grid;
+        player = p;
+    }
+
+    public static KeyStrokePrinter getKeyStrokePrinter(ObjectDisplayGrid grid, Player p)
+    {
+        if(keyPrinter == null)
+        {
+            return new KeyStrokePrinter(grid, p);
+        }
+        else
+        {
+            return keyPrinter;
+        }
     }
 
     @Override
@@ -39,21 +55,37 @@ public class KeyStrokePrinter implements InputObserver, Runnable {
         boolean processing = true;
         while (processing) {
             if (inputQueue.peek() == null) {
+                // System.out.println("Testing display");
                 processing = false;
             } else {
-                ch = inputQueue.poll();
-                if (DEBUG > 1) {
-                    System.out.println(CLASSID + ".processInput peek is " + ch);
-                }
+                ch = inputQueue.poll(); // Changed poll to peek
                 if (ch == 'X') {
                     System.out.println("got an X, ending input checking");
                     return false;
-                } else {
-                    System.out.println("character " + ch + " entered on the keyboard");
+                } 
+                if(ch == 'h' || ch == 'l' || ch == 'k' || ch == 'j')
+                {
+                    player.reactToInput(ch);
                 }
+                else if(ch == 'p'){
+                    //pick up 
+                }
+                else if(ch == 'i'){
+                    //display the contents of the pack + identifying number refered  to item
+                }
+                else if(ch == 'c'){
+                    //Change or take off armour
+                }
+                else if(ch == 'd'){
+                    //drop item
+                }
+                else {
+                    System.out.println("character " + ch + " entered on the keyboard. Not a valid character");
+                }
+
             }
         }
-        return true;
+        return true; 
     }
 
     @Override

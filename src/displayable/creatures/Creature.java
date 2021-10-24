@@ -17,7 +17,23 @@ public class Creature extends Displayable{
    private int maxHit;
    private String type;
    private List<Action> creatureActions = new ArrayList<Action>(); 
-   private List<Item> creatureItems = new ArrayList<Item>(); // TO DO: Finish this
+   protected List<Item> creatureItems = new ArrayList<Item>(); // TO DO: Finish this
+
+   public int getPosX(){return this.posX;}
+   public int getPosY(){return this.posY;}
+   public int getHP(){return this.hp;}
+   @Override
+   public char toChar()
+   {
+      if(name == "Player")
+      {
+         return '@';
+      }
+      else
+      {
+         return this.type.charAt(0);
+      }
+   }
 
    public void setName(String _name) {
       name = _name;

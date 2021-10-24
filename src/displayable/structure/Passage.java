@@ -13,7 +13,8 @@ public class Passage implements PlayerArea{  // Added implements
     {
         return false;
     }
-
+    public List<Integer> getPosXs(){return posXs;}
+    public List<Integer> getPosYs(){return posYs;}
     public void addPosX(int posX)
     {
         posXs.add((Integer) posX);

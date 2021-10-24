@@ -58,7 +58,7 @@ public class Room extends Displayable implements PlayerArea{ //Added
         for(Creature c : this.creatures)
         {
             i = c.getPosX() - this.posX;
-            j = c.getPosy() - this.posY;
+            j = c.getPosY() - this.posY;
             displayableGrid[i][j] = c;
         }
     }

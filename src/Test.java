@@ -49,8 +49,7 @@ public class Test {
 	    // what kind of XML we are parsing
             //System.out.println(dungeon.toString());
 	// these lines should be copied exactly.
-            int height = dungeon.getTopHeight() + dungeon.getBottomHeight() + dungeon.getGameHeight();
-            Game game = new Game(dungeon.getWidth(), height);
+            Game game = new Game(dungeon);
             game.runGame();
             // Thread gameThread = new Thread(game);
 

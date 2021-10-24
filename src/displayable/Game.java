@@ -1,5 +1,5 @@
 package src.displayable;
-
+import java.util.concurrent.ConcurrentLinkedQueue;
 public class Game implements Runnable {
 
     private static final int DEBUG = 0;
@@ -10,16 +10,43 @@ public class Game implements Runnable {
     private Thread keyStrokePrinter;
     private static final int WIDTH = 80;
     private static final int HEIGHT = 40;
+    private DisplayableGrid displayableGrid;
+    private Dungeon dungeon;
+    private int width;
+    private int height;
 
-    public Game(int width, int height) {
+    public Game(Dungeon d) {
+        width = d.getWidth();
+        height = d.getTopHeight() + d.getBottomHeight() + d.getGameHeight();
+        // height = d.getGameHeight(); 
         displayGrid = new ObjectDisplayGrid(width, height);
+        displayableGrid = new DisplayableGrid(d);
+        dungeon = d;
     }
 
     @Override
     public void run() {
         displayGrid.fireUp();
-        displayGrid.initializeDisplay();
-        return;
+        // displayGrid.initializeDisplay();
+        // System.out.println(displayableGrid);
+        // displayGrid.setObjectGrid(displayableGrid.getGridAsChars());
+        
+        
+        displayGrid.refreshDisplay(displayableGrid.getGridAsChars());
+        Char[][] newGrid;
+        for(;;)
+        {
+            try {
+                Thread.sleep(20);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            displayableGrid.generateGrid(this.dungeon);
+            newGrid = displayableGrid.getGridAsChars();
+            displayGrid.refreshDisplay(newGrid);
+        }
+
+
         // for (int step = 1; step < WIDTH / 2; step *= 2) {
         //     for (int i = 0; i < WIDTH; i += step) {
         //         for (int j = 0; j < HEIGHT; j += step) {
@@ -38,16 +65,14 @@ public class Game implements Runnable {
 
     public void runGame() throws Exception{
 
-        Game game = new Game(WIDTH, HEIGHT);
-        Thread testThread = new Thread(game);
+        // Game game = new Game(WIDTH, HEIGHT);
+        Thread testThread = new Thread(this);
         testThread.start();
 
-        game.keyStrokePrinter = new Thread(new KeyStrokePrinter(displayGrid));
-        game.keyStrokePrinter.start();
-
-        game.keyStrokePrinter.run();
+        this.keyStrokePrinter = new Thread(KeyStrokePrinter.getKeyStrokePrinter(displayGrid, dungeon.getPlayer()));
+        this.keyStrokePrinter.start();
 
         testThread.join();
-        game.keyStrokePrinter.join();
+        this.keyStrokePrinter.join();
     }
 }
