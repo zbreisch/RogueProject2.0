@@ -22,6 +22,7 @@ public class Game implements Runnable {
         displayGrid = new ObjectDisplayGrid(width, height);
         displayableGrid = new DisplayableGrid(d);
         dungeon = d;
+        d.linkPassagesAndRooms();
     }
 
     @Override

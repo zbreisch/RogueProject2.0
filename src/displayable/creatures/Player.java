@@ -65,7 +65,7 @@ public class Player extends Creature{
             //move down
             proposedY++;
         }
-        // if(currentArea.isValidMove(proposedX, proposedY))
+        if(currentArea.isValidMove(proposedX, proposedY))
         if(true)
         {
             this.posX = proposedX;

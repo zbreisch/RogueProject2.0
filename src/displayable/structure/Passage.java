@@ -9,12 +9,58 @@ public class Passage implements PlayerArea{  // Added implements
     private List<Integer> posXs = new ArrayList<Integer>();
     private List<Integer> posYs = new ArrayList<Integer>();
 
+    public Integer getFirstX()
+    {
+        if(posXs.size() > 0){
+            return posXs.get(0);
+        }
+        else
+        {
+            return Integer.valueOf(-1);
+        }
+    }
+    public Integer getFirstY()
+    {
+        if(posYs.size() > 0){
+            return posYs.get(0);
+        }
+        else
+        {
+            return Integer.valueOf(-1);
+        }
+    }
+    public Integer getLastX()
+    {
+        if(posXs.size() > 1){
+            return posXs.get(posXs.size() - 1);
+        }
+        else
+        {
+            return Integer.valueOf(-1);
+        }
+    }
+    public Integer getLastY()
+    {
+        if(posYs.size() > 1){
+            return posYs.get(posYs.size() - 1);
+        }
+        else
+        {
+            return Integer.valueOf(-1);
+        }
+    }
+
+
+    public int getRoom1(){return room1;}
+    public int getRoom2(){return room2;}
+
     public Boolean isValidMove(int x, int y) //Added method
     {
         return false;
     }
     public List<Integer> getPosXs(){return posXs;}
     public List<Integer> getPosYs(){return posYs;}
+    
     public void addPosX(int posX)
     {
         posXs.add((Integer) posX);

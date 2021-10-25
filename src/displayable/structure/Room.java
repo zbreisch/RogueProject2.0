@@ -17,6 +17,9 @@ public class Room extends Displayable implements PlayerArea{ //Added
     private Displayable[][] displayableGrid;
     private List<Creature> creatures = new ArrayList<Creature>();
     private List<Item> items = new ArrayList<Item>();
+    private List<Passage> passages = new ArrayList<Passage>();
+    private List<Integer> xJunctions = new ArrayList<Integer>();
+    private List<Integer> yJunctions = new ArrayList<Integer>();
 
     public Displayable[][] getDisplayableGrid()
     {
@@ -27,6 +30,20 @@ public class Room extends Displayable implements PlayerArea{ //Added
     public Boolean isValidMove(int x, int y) // Added
     {
         return false;
+    }
+
+    public void addPassage(Passage p) {
+        passages.add(p);
+        if(this.room == p.getRoom1())
+        {
+            xJunctions.add(p.getFirstX());
+            yJunctions.add(p.getFirstY());
+        }
+        else
+        {
+            xJunctions.add(p.getLastX());
+            yJunctions.add(p.getLastY());
+        }
     }
 
     //public Displayable getGrid(int x, int y){return this.displayableGrid[x][y];}
@@ -66,6 +83,7 @@ public class Room extends Displayable implements PlayerArea{ //Added
     public int getPosY(){return this.posY;}
     public int getWidth(){return this.width;}
     public int getHeight(){return this.height;}
+    public int getRoom(){return room;}
 
     public void addCreature(Creature c) {creatures.add(c);}
 

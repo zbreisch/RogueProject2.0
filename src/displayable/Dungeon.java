@@ -17,6 +17,24 @@ public class Dungeon {
     private List<Room> rooms = new ArrayList<Room>();
     private List<Passage> passages = new ArrayList<Passage>();
 
+    // Called in in constructor for Game
+    public void linkPassagesAndRooms()
+    {
+        for(Room r : rooms)
+        {
+            for(Passage p : passages)
+            {
+                if(p.getRoom1() == r.getRoom())
+                {
+                    r.addPassage(p);
+                }
+                else if(p.getRoom2() == r.getRoom())
+                {
+                    r.addPassage(p);
+                }
+            }
+        }
+    }
 
     public String getTopText()
     {
