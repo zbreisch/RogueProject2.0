@@ -8,7 +8,8 @@ public class Passage implements PlayerArea{  // Added implements
     private int visible;
     private List<Integer> posXs = new ArrayList<Integer>();
     private List<Integer> posYs = new ArrayList<Integer>();
-
+    private List<Integer> fullPosXs = new ArrayList<Integer>();
+    private List<Integer> fullPosYs = new ArrayList<Integer>();
     public Integer getFirstX()
     {
         if(posXs.size() > 0){
@@ -54,10 +55,6 @@ public class Passage implements PlayerArea{  // Added implements
     public int getRoom1(){return room1;}
     public int getRoom2(){return room2;}
 
-    public Boolean isValidMove(int x, int y) //Added method
-    {
-        return false;
-    }
     public List<Integer> getPosXs(){return posXs;}
     public List<Integer> getPosYs(){return posYs;}
     
@@ -103,6 +100,62 @@ public class Passage implements PlayerArea{  // Added implements
         str += "\n";
 
         return str;
-    }    
+    }
+    
+    public void populateAllCoordinates()
+    {
+        for(int i = 0; i < posYs.size(); i++){ // Looping through each of the elbows, less then so 1 less
+
+            if(posXs.get(i) != posXs.get(i+1)){
+                int wlx = (posXs.get(i+1)-posXs.get(i));
+                int lx = Math.abs(wlx);
+                for(int k=0; k<lx; k++){
+                    if(posXs.get(i) < posXs.get(i+1)){ // i+1 is to the right
+                       int newx = posXs.get(i) + k;
+                       int newy = posYs.get(i);
+                       fullPosXs.add((Integer) newx);
+                       fullPosYs.add((Integer) newy);
+                    }
+                    else{
+                       int newx = posXs.get(i) - k;
+                       int newy = posYs.get(i);
+                       fullPosXs.add((Integer) newx);
+                       fullPosYs.add((Integer) newy);
+                    }
+                }
+            }
+            if(posYs.get(i) != posYs.get(i+1)){
+                int wly = (posYs.get(i+1)-posYs.get(i));
+                int ly = Math.abs(wly);
+                for(int k=0; k<ly; k++){
+                    if(posYs.get(i) < posYs.get(i+1)){ // i+1 is below
+                        int newy = posYs.get(i) + k;
+                        int newx = posXs.get(i);
+                        fullPosYs.add((Integer) newy);
+                        fullPosXs.add((Integer) newx);
+                    }
+                    else{
+                        int newy = posYs.get(i) - k;
+                        int newx = posXs.get(i);
+                        fullPosXs.add((Integer) newx);
+                        fullPosYs.add((Integer) newy);
+                    }
+                        
+                }
+            }
+        }
+    }
+
+
+    // posXs.get(0) (gets 0th X coordinate)
+    // posXs.size() (gets number of unique elbows
+    public Boolean isValidMove(int x, int y)
+    {
+        for(int i=0; i<fullPosXs.size(); i++){
+            if(x == fullPosXs.get(i) && y == fullPosYs.get(i))
+            return true;
+        }
+        return false;
+    }
 
 }

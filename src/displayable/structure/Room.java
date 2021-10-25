@@ -27,11 +27,6 @@ public class Room extends Displayable implements PlayerArea{ //Added
         return displayableGrid;
     }
 
-    public Boolean isValidMove(int x, int y) // Added
-    {
-        return false;
-    }
-
     public void addPassage(Passage p) {
         passages.add(p);
         if(this.room == p.getRoom1())
@@ -140,4 +135,23 @@ public class Room extends Displayable implements PlayerArea{ //Added
 
         return str;
     }    
+
+    public Boolean isValidMove(int x, int y)
+    {
+        int unable = 0;
+
+        for(Creature c : creatures) {
+            int cx = c.getPosX();
+            int cy = c.getPosY();
+            if(cx == x && cy == y){
+                unable = 1;
+            }  
+        }
+
+        if(posX == x || (posX + width) == x || posY == y || (posY-height) == y || unable == 1){
+            return false;
+        }
+        else
+            return true;
+    }
 }

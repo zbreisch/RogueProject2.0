@@ -1,5 +1,6 @@
 package src.displayable;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import src.displayable.structure.*;
 public class Game implements Runnable {
 
     private static final int DEBUG = 0;
@@ -23,6 +24,10 @@ public class Game implements Runnable {
         displayableGrid = new DisplayableGrid(d);
         dungeon = d;
         d.linkPassagesAndRooms();
+
+        for(Passage p : d.getPassages()){
+            p.populateAllCoordinates();
+        }
     }
 
     @Override
