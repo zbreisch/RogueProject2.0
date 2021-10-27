@@ -30,6 +30,14 @@ public class DisplayableGrid {
     public Char[][] getGridAsChars()
     {
         Char[][] cGrid = new Char[gameWidth][gameHeight + topHeight + bottomHeight];
+        Char empty = new Char(' ');
+        for(int i = 0; i < gameWidth; i++)
+        {
+            for(int j = 0; j < (gameHeight + topHeight + bottomHeight); j++)
+            {
+                cGrid[i][j] = empty;
+            }
+        }
         int i = 0;
         int j = 0;
         char[] ch = topText.toCharArray();
@@ -111,29 +119,40 @@ public class DisplayableGrid {
             }
         }
 
+        List<Integer> xCoordinates;
+        List<Integer> yCoordinates;
         for(Passage p : passages)
         {
-            List<Integer> x = p.getPosXs();
-            List<Integer> y = p.getPosYs();
-
-            if(x.size() == y.size()) {
-                for(int i = 0; i < y.size(); i++) {
-                    if(i == 0 || i == (y.size() - 1))
-                    {
-                        // If we assign passage junctions to rooms, this will need changed to pass
-                        this.grid[x.get(i)][y.get(i) + topHeight] = new PassageJunction(); 
-                    }
-                    else
-                    {
-                        this.grid[x.get(i)][y.get(i) + topHeight] = new PassageFloor();
-                    }
-                }
-            }
-            else
+            xCoordinates = p.getFullPosXs();
+            yCoordinates = p.getFullPosYs();
+            
+            // Don't do passageJunction here.  Handled by Room.
+            for(int i = 1; i < p.getFullPosXs().size() - 1; i++)
             {
-                // Should never get here
+                this.grid[xCoordinates.get(i)][yCoordinates.get(i) + this.topHeight] = new PassageFloor(); 
             }
+            // List<Integer> x = p.getPosXs();
+            // List<Integer> y = p.getPosYs();
+
+            // if(x.size() == y.size()) {
+            //     for(int i = 0; i < y.size(); i++) {
+            //         if(i == 0 || i == (y.size() - 1))
+            //         {
+            //             // If we assign passage junctions to rooms, this will need changed to pass
+            //             this.grid[x.get(i)][y.get(i) + topHeight] = new PassageJunction(); 
+            //         }
+            //         else
+            //         {
+            //             this.grid[x.get(i)][y.get(i) + topHeight] = new PassageFloor();
+            //         }
+            //     }
+            // }
+            // else
+            // {
+            //     // Should never get here
+            // }
         }
+        this.grid[d.getPlayer().getPosX()][d.getPlayer().getPosY() + this.topHeight] = d.getPlayer();
     }
     @Override
     public String toString()

@@ -47,7 +47,7 @@ public class Test {
             Dungeon dungeon = handler.getDungeon();
 	    // print out all of the students.  This will change depending on 
 	    // what kind of XML we are parsing
-            //System.out.println(dungeon.toString());
+            System.out.println(dungeon.toString());
 	// these lines should be copied exactly.
             Game game = new Game(dungeon);
             game.runGame();

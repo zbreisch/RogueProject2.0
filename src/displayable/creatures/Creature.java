@@ -16,12 +16,28 @@ public class Creature extends Displayable{
    private int hpMoves;
    private int maxHit;
    private String type;
+   static protected String infoText = "";
    private List<Action> creatureActions = new ArrayList<Action>(); 
    protected List<Item> creatureItems = new ArrayList<Item>(); // TO DO: Finish this
 
    public int getPosX(){return this.posX;}
    public int getPosY(){return this.posY;}
    public int getHP(){return this.hp;}
+   public String getName(){return this.name;}
+   public String getType(){return this.type;}
+   
+   public void initiateCombat(Creature opponent)
+   {
+      Random rand = new Random();
+      int damage = rand.nextInt(this.maxHit);
+      Creature.infoText = this.name + " did " + Integer.toString(damage) + " damage to " + opponent.name;
+      opponent.setHP(opponent.getHP() - damage);
+      damage = rand.nextInt(opponent.maxHit);
+      Creature.infoText +=" and took " + Integer.toString(damage) + " damage.";
+      this.hp -= damage;
+      // Do some logic to see if anyone has died
+   }
+
    @Override
    public char toChar()
    {
@@ -34,6 +50,7 @@ public class Creature extends Displayable{
          return this.type.charAt(0);
       }
    }
+
 
    public void setName(String _name) {
       name = _name;

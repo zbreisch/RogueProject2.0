@@ -12,20 +12,31 @@ public class Player extends Creature{
 
     private Item playerItem;
     private static String CLASSID = "Player";
-    private PlayerArea currentArea;
+    private static PlayerArea currentArea;
     private int score;
-    private String infoText = "";
+    // private int gridPosX;
+    // private int gridPosY;
 
     public int getScore(){return score;}
+
+    // public void setGridPosX(int x, Room r){gridPosX = x;}
+    // public void setGridPosY(int y, Room r){gridPosY = y;}
+
+    public static void setPlayerArea(PlayerArea pa)
+    {
+        currentArea = pa;
+    }
+
     public String getBottomText()
     {
         String str = "Pack: ";
         for(Item i : this.creatureItems)
         {
+            System.out.println(i.getName());
             str += i.getName();
         }
         str += "\nInfo: ";
-        str += infoText;
+        str += Creature.infoText;
         return str;
     }
 
@@ -64,6 +75,26 @@ public class Player extends Creature{
         else if(ch == 'j'){
             //move down
             proposedY++;
+        }
+        else if(ch == 'p')
+        {
+            System.out.println("ya");
+            currentArea.pickUpItem(posX, posY);
+        }
+        else if(ch == 'd')
+        {
+            if(this.creatureItems.size() > 0)
+            {
+                // Note there may be bugs with displaying absolute position of items.  remains untested.
+                Item toDrop = this.creatureItems.remove(0);
+                toDrop.setPosX(this.posX);
+                toDrop.setPosY(this.posY);
+                currentArea.addItem(toDrop);
+            }
+            else
+            {
+                // do nothing
+            }
         }
         if(currentArea.isValidMove(proposedX, proposedY))
         if(true)

@@ -1,15 +1,30 @@
 package src.displayable.structure;
 
+import src.displayable.item.*;
+import src.displayable.creatures.*;
 import java.util.*;
 
 public class Passage implements PlayerArea{  // Added implements
     private int room1;
     private int room2;
+    private Room sourceRoom;
+    private Room destRoom;
     private int visible;
     private List<Integer> posXs = new ArrayList<Integer>();
     private List<Integer> posYs = new ArrayList<Integer>();
     private List<Integer> fullPosXs = new ArrayList<Integer>();
     private List<Integer> fullPosYs = new ArrayList<Integer>();
+    private Creature player;
+    private List<Item> passageItems = new ArrayList<Item>();
+
+    public List<Integer> getFullPosXs(){return fullPosXs;}
+    public List<Integer> getFullPosYs(){return fullPosYs;}
+
+    public void setSourceRoom(Room r){this.sourceRoom = r;}
+    public void setDestRoom(Room r){this.destRoom = r;}
+
+    public void setPlayer(Creature c){player = c;}
+
     public Integer getFirstX()
     {
         if(posXs.size() > 0){
@@ -104,21 +119,22 @@ public class Passage implements PlayerArea{  // Added implements
     
     public void populateAllCoordinates()
     {
-        for(int i = 0; i < posYs.size(); i++){ // Looping through each of the elbows, less then so 1 less
-
-            if(posXs.get(i) != posXs.get(i+1)){
+        int newx;
+        int newy;
+        for(int i = 0; i < posYs.size() - 1; i++){ // Looping through each of the elbows, less then so 1 less
+            if(posXs.get(i) != posXs.get(i + 1)){
                 int wlx = (posXs.get(i+1)-posXs.get(i));
                 int lx = Math.abs(wlx);
                 for(int k=0; k<lx; k++){
                     if(posXs.get(i) < posXs.get(i+1)){ // i+1 is to the right
-                       int newx = posXs.get(i) + k;
-                       int newy = posYs.get(i);
+                       newx = posXs.get(i) + k;
+                       newy = posYs.get(i);
                        fullPosXs.add((Integer) newx);
                        fullPosYs.add((Integer) newy);
                     }
                     else{
-                       int newx = posXs.get(i) - k;
-                       int newy = posYs.get(i);
+                       newx = posXs.get(i) - k;
+                       newy = posYs.get(i);
                        fullPosXs.add((Integer) newx);
                        fullPosYs.add((Integer) newy);
                     }
@@ -129,33 +145,78 @@ public class Passage implements PlayerArea{  // Added implements
                 int ly = Math.abs(wly);
                 for(int k=0; k<ly; k++){
                     if(posYs.get(i) < posYs.get(i+1)){ // i+1 is below
-                        int newy = posYs.get(i) + k;
-                        int newx = posXs.get(i);
+                        newy = posYs.get(i) + k;
+                        newx = posXs.get(i);
                         fullPosYs.add((Integer) newy);
                         fullPosXs.add((Integer) newx);
                     }
                     else{
-                        int newy = posYs.get(i) - k;
-                        int newx = posXs.get(i);
+                        newy = posYs.get(i) - k;
+                        newx = posXs.get(i);
                         fullPosXs.add((Integer) newx);
                         fullPosYs.add((Integer) newy);
                     }
-                        
                 }
             }
         }
+        fullPosXs.add(this.getLastX());
+        fullPosYs.add(this.getLastY());
     }
 
+    public void pickUpItem(int x, int y)
+    {
+        if(passageItems.size() > 0)
+        {
+            Item toPickUp = null;
+            for(Item i : passageItems)
+            {
+                if(i.getPosX() == x && i.getPosY() == y)
+                {
+                    toPickUp = i;
+                }
+            }
 
+            if(toPickUp != null)
+            {
+                player.addItem(toPickUp);
+                this.passageItems.remove(toPickUp);
+            }
+        }
+        return;
+    }
+
+    public void addItem(Item i)
+    {
+        this.passageItems.add(i);
+    }
     // posXs.get(0) (gets 0th X coordinate)
     // posXs.size() (gets number of unique elbows
     public Boolean isValidMove(int x, int y)
     {
         for(int i=0; i<fullPosXs.size(); i++){
             if(x == fullPosXs.get(i) && y == fullPosYs.get(i))
+            {
+                return true;
+            }
+        }
+        if(sourceRoom.isValidMove(x,y))
+        {
+            Player.setPlayerArea(sourceRoom);
+            sourceRoom.addCreature(player);
+            this.player = null;
             return true;
         }
-        return false;
+        else if(destRoom.isValidMove(x,y))
+        {
+            destRoom.addCreature(player);
+            this.player = null;
+            Player.setPlayerArea(destRoom);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
 }

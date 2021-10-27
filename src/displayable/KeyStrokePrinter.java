@@ -63,7 +63,7 @@ public class KeyStrokePrinter implements InputObserver, Runnable {
                     System.out.println("got an X, ending input checking");
                     return false;
                 } 
-                if(ch == 'h' || ch == 'l' || ch == 'k' || ch == 'j')
+                if(ch == 'h' || ch == 'l' || ch == 'k' || ch == 'j' || ch == 'p' || ch == 'd')
                 {
                     player.reactToInput(ch);
                 }

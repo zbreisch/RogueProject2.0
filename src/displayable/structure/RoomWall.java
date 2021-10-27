@@ -5,6 +5,6 @@ public class RoomWall extends Displayable{
     @Override
     public char toChar()
     {
-        return 'x';
+        return 'X';
     }
 }

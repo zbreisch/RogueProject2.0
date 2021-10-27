@@ -139,6 +139,7 @@ public class DungeonXMLHandler extends DefaultHandler {
         } else if (qName.equalsIgnoreCase("Player")) {
             //creatureBeingParsed = new Creature();
             Player player = new Player();
+            Player.setPlayerArea(roomBeingParsed);
             dungeon.setPlayer(player);
             creatureBeingParsed = player;
             
@@ -230,8 +231,21 @@ public class DungeonXMLHandler extends DefaultHandler {
             }
             bVisible = false;
         } else if (bPosX) {
-            if (bItem) {itemBeingParsed.setPosX(Integer.parseInt(data.toString()));}
-            else if (bCreature) {creatureBeingParsed.setPosX(Integer.parseInt(data.toString()));}
+            if (bItem) {
+                if(bCreature){
+                // itemBeingParsed.setPosX(Integer.parseInt(data.toString()));
+                    itemBeingParsed.setPosX(creatureBeingParsed.getPosX());
+                }
+                else if (bRoom)
+                {
+                    itemBeingParsed.setPosX(Integer.parseInt(data.toString()) + roomBeingParsed.getPosX());
+                }
+                else
+                {
+                    itemBeingParsed.setPosX(Integer.parseInt(data.toString()));
+                }
+            }
+            else if (bCreature) {creatureBeingParsed.setPosX(Integer.parseInt(data.toString()) + roomBeingParsed.getPosX());}
             else if (bRoom) {roomBeingParsed.setPosX(Integer.parseInt(data.toString()));}
             else if (bPassage) {passageBeingParsed.addPosX(Integer.parseInt(data.toString()));}
             else {
@@ -239,8 +253,21 @@ public class DungeonXMLHandler extends DefaultHandler {
             }
             bPosX = false;
         } else if (bPosY) {
-            if (bItem) {itemBeingParsed.setPosY(Integer.parseInt(data.toString()));}
-            else if (bCreature) {creatureBeingParsed.setPosY(Integer.parseInt(data.toString()));}
+            if (bItem) {                
+                if(bCreature){
+                // itemBeingParsed.setPosX(Integer.parseInt(data.toString()));
+                    itemBeingParsed.setPosY(creatureBeingParsed.getPosY());
+                }
+                else if (bRoom)
+                {
+                    itemBeingParsed.setPosY(Integer.parseInt(data.toString()) + roomBeingParsed.getPosY());
+                }
+                else
+                {
+                    itemBeingParsed.setPosY(Integer.parseInt(data.toString()));
+                }
+            }
+            else if (bCreature) {creatureBeingParsed.setPosY(Integer.parseInt(data.toString()) + roomBeingParsed.getPosY());}
             else if (bRoom) {roomBeingParsed.setPosY(Integer.parseInt(data.toString()));}
             else if (bPassage) {passageBeingParsed.addPosY(Integer.parseInt(data.toString()));}
             else {

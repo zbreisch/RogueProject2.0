@@ -59,7 +59,6 @@ public class ObjectDisplayGrid extends JFrame implements KeyListener, InputSubje
 
     private void notifyInputObservers(char ch) {
         for (InputObserver observer : inputObservers) {
-            System.out.println("ya");
             observer.observerUpdate(ch);
             if (DEBUG > 0) {
                 System.out.println(CLASSID + ".notifyInputObserver " + ch);
@@ -111,13 +110,14 @@ public class ObjectDisplayGrid extends JFrame implements KeyListener, InputSubje
         {
             for(int j = 0; j < height; j++)
             {
-                if(newGrid[i][j] != this.objectGrid[i][j])
+                if(newGrid[i][j] != this.objectGrid[i][j] && newGrid[i][j] != null)
                 {
+                    this.objectGrid[i][j] = newGrid[i][j];
                     writeToTerminal(i,j);
                 }
             }
         }
-        this.objectGrid = newGrid;
+        // this.objectGrid = newGrid;
     }
 
     public void addObjectToDisplay(Char ch, int x, int y) {

@@ -2,7 +2,7 @@ package src.displayable.structure;
 
 
 import src.displayable.Displayable;
-import src.displayable.creatures.Creature;
+import src.displayable.creatures.*;
 import src.displayable.item.Item;
 
 import java.util.*;
@@ -33,11 +33,13 @@ public class Room extends Displayable implements PlayerArea{ //Added
         {
             xJunctions.add(p.getFirstX());
             yJunctions.add(p.getFirstY());
+            p.setSourceRoom(this);
         }
         else
         {
             xJunctions.add(p.getLastX());
             yJunctions.add(p.getLastY());
+            p.setDestRoom(this);
         }
     }
 
@@ -65,12 +67,16 @@ public class Room extends Displayable implements PlayerArea{ //Added
         {
             i = itm.getPosX() - this.posX;
             j = itm.getPosY() - this.posY;
+            // i = itm.getPosX();
+            // j = itm.getPosY();
             displayableGrid[i][j] = itm;
         }
         for(Creature c : this.creatures)
         {
             i = c.getPosX() - this.posX;
             j = c.getPosY() - this.posY;
+            // i = c.getPosX();
+            // j = c.getPosY();
             displayableGrid[i][j] = c;
         }
     }
@@ -136,19 +142,82 @@ public class Room extends Displayable implements PlayerArea{ //Added
         return str;
     }    
 
+    public void pickUpItem(int x, int y)
+    {
+        Creature player = null;
+        for(Creature c : creatures)
+        {
+            if(c.getType() == "@")
+            {
+                player = c;
+            }
+        }
+
+        if(player == null)
+        {
+            System.out.println("Player not in room");
+            return;
+        }
+
+        Item toPickUp = null;
+        for(Item i : items)
+        {
+            System.out.println(Integer.toString(i.getPosX()) + " " + Integer.toString(i.getPosY()));
+            if(i.getPosX() == x && i.getPosY() == y)
+            {
+                toPickUp = i;
+            }
+        }
+
+        if(toPickUp != null)
+        {
+            player.addItem(toPickUp);
+            this.items.remove(toPickUp);
+        }
+        return;
+    }
+
     public Boolean isValidMove(int x, int y)
     {
         int unable = 0;
-
+        Creature player = null;
+        Creature toFight = null;
+        if(x < this.posX || x > this.posX + this.width - 1
+            || y < this.posY || y > this.posY + this.height - 1)
+        {
+            return false;
+        }
         for(Creature c : creatures) {
             int cx = c.getPosX();
             int cy = c.getPosY();
-            if(cx == x && cy == y){
+            String cp = c.getType();
+            if(cp == "@"){
+                player = c;
+            }
+            else if(cx == x && cy == y){
                 unable = 1;
-            }  
+                toFight = c;
+            }
         }
 
-        if(posX == x || (posX + width) == x || posY == y || (posY-height) == y || unable == 1){
+        if(unable == 1)
+        {
+            player.initiateCombat(toFight);
+            return false;
+        }
+
+        if(this.posX == x || (posX + width - 1) == x || posY== y || (posY + height-1) == y){
+            for(int i = 0; i < xJunctions.size(); i++)
+            {
+                if(x == xJunctions.get(i) && y == yJunctions.get(i))
+                {
+                    Player.setPlayerArea(this.passages.get(i));
+                    passages.get(i).setPlayer(player);
+                    this.creatures.remove(player);
+
+                    return true;
+                }
+            }
             return false;
         }
         else
