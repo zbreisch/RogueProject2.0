@@ -10,7 +10,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Player extends Creature{
 
-    private Item playerItem;
     private static String CLASSID = "Player";
     private static PlayerArea currentArea;
     private int score;
@@ -39,8 +38,6 @@ public class Player extends Creature{
         str += Creature.infoText;
         return str;
     }
-
-    public void setPlayerItem(Item _playerItem) {playerItem = _playerItem;}
 
     public Player() {
     }

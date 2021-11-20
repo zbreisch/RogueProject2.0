@@ -164,20 +164,41 @@ public class DungeonXMLHandler extends DefaultHandler {
             bAction = true;
         } else if (qName.equalsIgnoreCase("Armor")) {
             itemBeingParsed = new Armor();
+            itemBeingParsed.setIsArmor(true);
             itemBeingParsed.setName(attributes.getValue("name"));
             itemBeingParsed.setRoom(Integer.parseInt(attributes.getValue("room")));
             itemBeingParsed.setSerial(Integer.parseInt(attributes.getValue("serial")));
 
-            if(bCreature){creatureBeingParsed.addItem(itemBeingParsed);}
+            if(bCreature){
+                if(creatureBeingParsed != null)
+                {
+                    creatureBeingParsed.setArmor((Armor)itemBeingParsed);
+                }
+                else{
+                    creatureBeingParsed.addItem(itemBeingParsed);
+                }
+            }
             else {roomBeingParsed.addItem(itemBeingParsed);}
             bItem = true;
         } else if (qName.equalsIgnoreCase("Sword")) {
             itemBeingParsed = new Sword();
+            itemBeingParsed.setIsSword(true);
+
             itemBeingParsed.setName(attributes.getValue("name"));
             itemBeingParsed.setRoom(Integer.parseInt(attributes.getValue("room")));
             itemBeingParsed.setSerial(Integer.parseInt(attributes.getValue("serial")));
             bItem = true;
-            if(bCreature){creatureBeingParsed.addItem(itemBeingParsed);}
+
+            if(bCreature){
+                if(creatureBeingParsed != null)
+                {
+                    creatureBeingParsed.setWeapon((Sword)itemBeingParsed);
+                }
+                else
+                {
+                    creatureBeingParsed.addItem(itemBeingParsed);
+                }
+            }
             else {roomBeingParsed.addItem(itemBeingParsed);}
         } else if (qName.equalsIgnoreCase("Scroll")) {
             itemBeingParsed = new Scroll();

@@ -12,11 +12,21 @@ public class Item extends Displayable{
     private int posX;
     private int posY;
     private int itemIntValue;
+    private boolean isArmor = false;
+    private boolean isSword = false;
     private List<Action> itemActions = new ArrayList<Action>();
 
     public int getPosX(){return this.posX;}
     public int getPosY(){return this.posY;}
     public String getName(){return this.name;}
+    public int getItemIntValue(){return this.itemIntValue;}
+
+    public boolean isArmor() {return this.isArmor;}
+    public boolean isSword() {return this.isSword;}
+
+    public void setIsArmor(boolean _isIt) {this.isArmor = _isIt;}
+
+    public void setIsSword(boolean _isIt) {this.isSword = _isIt;}
 
     public void setName(String _name){name = _name;}
 

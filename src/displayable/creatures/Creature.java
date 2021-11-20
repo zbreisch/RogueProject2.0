@@ -1,11 +1,13 @@
 package src.displayable.creatures;
 import src.action.Action;
 import src.displayable.Displayable;
-import src.displayable.item.Item;
+import src.displayable.item.*;
 
 import java.util.*;
 
 public class Creature extends Displayable{
+   private Armor armor;
+   private Sword weapon;
    private String name;
    private int room;
    private int serial;
@@ -20,19 +22,87 @@ public class Creature extends Displayable{
    private List<Action> creatureActions = new ArrayList<Action>(); 
    protected List<Item> creatureItems = new ArrayList<Item>(); // TO DO: Finish this
 
+
    public int getPosX(){return this.posX;}
    public int getPosY(){return this.posY;}
    public int getHP(){return this.hp;}
    public String getName(){return this.name;}
    public String getType(){return this.type;}
    
+
+   public void equipArmor(int inventoryIdx)
+   {
+       if(this.armor == null)
+       {
+           if(creatureItems.get(inventoryIdx).isArmor())
+           {
+               this.armor = (Armor) this.creatureItems.remove(inventoryIdx);
+           }
+       }
+   }
+
+   public void equipWeapon(int inventoryIdx)
+   {
+       if(this.armor == null)
+       {
+           if(creatureItems.get(inventoryIdx).isSword())
+           {
+               this.weapon = (Sword) this.creatureItems.remove(inventoryIdx);
+           }
+       }
+   }
+
+   public void unequipArmor()
+   {
+       if(this.armor != null)
+       {
+           this.addItem(this.armor);
+       }
+       this.armor = null;
+   }
+
+   public void unequipWeapon()
+   {
+       if(this.weapon != null)
+       {
+           this.addItem(this.weapon);
+       }
+       this.weapon = null;
+   }
+
+   public void setArmor(Armor _playerItem) {this.armor = _playerItem;}
+
+   public void setWeapon(Sword _playerItem) {this.weapon = _playerItem;}
+
+   public Armor getArmor() {return this.armor;}
+
+   public Sword getWeapon() {return this.weapon;}
+
    public void initiateCombat(Creature opponent)
    {
       Random rand = new Random();
       int damage = rand.nextInt(this.maxHit);
+      Sword oppWeapon = opponent.getWeapon();
+      Armor oppArmor = opponent.getArmor();
+      if(this.weapon != null)
+      {
+         damage += this.weapon.getItemIntValue();
+      }
+      if(oppArmor != null)
+      {
+         damage -= oppArmor.getItemIntValue();
+      }
       Creature.infoText = this.name + " did " + Integer.toString(damage) + " damage to " + opponent.name;
       opponent.setHP(opponent.getHP() - damage);
       damage = rand.nextInt(opponent.maxHit);
+      if(oppWeapon != null)
+      {
+         damage += oppWeapon.getItemIntValue();
+      }
+      if(this.armor != null)
+      {
+         damage -= this.armor.getItemIntValue();
+      }
       Creature.infoText +=" and took " + Integer.toString(damage) + " damage.";
       this.hp -= damage;
       // Do some logic to see if anyone has died
