@@ -56,6 +56,13 @@ public class Room extends Displayable implements PlayerArea{ //Added
                 if(j == 0 || j == (this.height - 1) || i == 0 || i == (this.width - 1))
                 {
                     displayableGrid[i][j] = new RoomWall();
+                    for(int k = 0; k < xJunctions.size(); k++)
+                    {
+                        if(i + this.posX == xJunctions.get(k) && j + this.posY == yJunctions.get(k))
+                        {
+                            displayableGrid[i][j] = new PassageJunction();
+                        }
+                    }
                 }
                 else
                 {
