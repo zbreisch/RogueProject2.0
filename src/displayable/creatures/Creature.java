@@ -28,7 +28,8 @@ public class Creature extends Displayable{
    public int getHP(){return this.hp;}
    public String getName(){return this.name;}
    public String getType(){return this.type;}
-   
+
+   public int moveCount; // BC
 
    public void equipArmor(int inventoryIdx)
    {
@@ -178,4 +179,20 @@ public class Creature extends Displayable{
 
        return str;
    }    
+
+    public void incrementCount(){ // BC
+        moveCount++;
+    }
+
+    public void resetCount(){
+        moveCount = 0;
+    }
+
+    public void checkMoves(){
+        if(moveCount == hpMoves){
+        moveCount = 0;
+        hp++;
+        }
+    }
+
 }

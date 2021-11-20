@@ -210,6 +210,7 @@ public class Room extends Displayable implements PlayerArea{ //Added
         if(unable == 1)
         {
             player.initiateCombat(toFight);
+            player.incrementCount(); // BC
             return false;
         }
 
@@ -221,13 +222,14 @@ public class Room extends Displayable implements PlayerArea{ //Added
                     Player.setPlayerArea(this.passages.get(i));
                     passages.get(i).setPlayer(player);
                     this.creatures.remove(player);
-
+                    player.incrementCount(); // BC        
                     return true;
                 }
             }
             return false;
         }
         else
+            player.incrementCount(); // BC
             return true;
     }
 }

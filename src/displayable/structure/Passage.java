@@ -196,6 +196,7 @@ public class Passage implements PlayerArea{  // Added implements
         for(int i=0; i<fullPosXs.size(); i++){
             if(x == fullPosXs.get(i) && y == fullPosYs.get(i))
             {
+                player.incrementCount(); // BC
                 return true;
             }
         }
@@ -204,6 +205,7 @@ public class Passage implements PlayerArea{  // Added implements
             Player.setPlayerArea(sourceRoom);
             sourceRoom.addCreature(player);
             this.player = null;
+            player.incrementCount(); // BC
             return true;
         }
         else if(destRoom.isValidMove(x,y))
@@ -211,6 +213,7 @@ public class Passage implements PlayerArea{  // Added implements
             destRoom.addCreature(player);
             this.player = null;
             Player.setPlayerArea(destRoom);
+            player.incrementCount(); // BC
             return true;
         }
         else
