@@ -11,7 +11,7 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.xml.sax.SAXException;
 
-public class Test {
+public class Rogue {
     public static void main(String[] args) throws Exception{
 
 	// check if a filename is passed in.  If not, print a usage message.
