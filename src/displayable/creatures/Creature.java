@@ -6,8 +6,8 @@ import src.displayable.item.*;
 import java.util.*;
 
 public class Creature extends Displayable{
-   private Armor armor;
-   private Sword weapon;
+   protected Armor armor;
+   protected Sword weapon;
    private String name;
    private int room;
    private int serial;
@@ -31,44 +31,56 @@ public class Creature extends Displayable{
 
    public int moveCount; // BC
 
-   public void equipArmor(int inventoryIdx)
+   public boolean equipArmor(int inventoryIdx)
    {
        if(this.armor == null)
        {
-           if(creatureItems.get(inventoryIdx).isArmor())
+           if(inventoryIdx < creatureItems.size())
            {
-               this.armor = (Armor) this.creatureItems.remove(inventoryIdx);
-           }
+                if(creatureItems.get(inventoryIdx).isArmor())
+                {
+                    this.armor = (Armor) this.creatureItems.remove(inventoryIdx);
+                    return true;
+                }
+            }
        }
+       return false;
    }
 
-   public void equipWeapon(int inventoryIdx)
+   public boolean equipWeapon(int inventoryIdx)
    {
-       if(this.armor == null)
+       if(this.armor != null)
        {
-           if(creatureItems.get(inventoryIdx).isSword())
-           {
-               this.weapon = (Sword) this.creatureItems.remove(inventoryIdx);
-           }
+            unequipWeapon();
        }
+       if(inventoryIdx < creatureItems.size() && creatureItems.get(inventoryIdx).isSword())
+       {
+           this.weapon = (Sword) this.creatureItems.remove(inventoryIdx);
+           return true;
+       }
+       return false;
    }
 
-   public void unequipArmor()
+   public boolean unequipArmor()
    {
        if(this.armor != null)
        {
            this.addItem(this.armor);
+           this.armor = null;
+           return true;
        }
-       this.armor = null;
+       return false;
    }
 
-   public void unequipWeapon()
+   public boolean unequipWeapon()
    {
        if(this.weapon != null)
        {
            this.addItem(this.weapon);
+           this.weapon = null;
+           return true;
        }
-       this.weapon = null;
+       return false;
    }
 
    public void setArmor(Armor _playerItem) {this.armor = _playerItem;}

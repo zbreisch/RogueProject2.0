@@ -18,7 +18,9 @@ public class Player extends Creature{
 
     ///bc
     private boolean infoFlag;
-    
+    private boolean wearArmor;
+    private boolean wearSword;
+
     public int getScore(){return score;}
 
     // public void setGridPosX(int x, Room r){gridPosX = x;}
@@ -34,7 +36,7 @@ public class Player extends Creature{
         String str = "Pack: ";
         for(Item i : this.creatureItems)
         {
-            System.out.println(i.getName());
+            // System.out.println(i.getName());
             str += i.getName();
         }
         str += "\nInfo: ";
@@ -58,9 +60,50 @@ public class Player extends Creature{
 
     public void reactToInput(char ch)
     {
+        System.out.println(this.armor);
         int proposedX = this.posX;
         int proposedY = this.posY;
-        if(infoFlag == true){
+        if(this.wearArmor)
+        {
+            this.wearArmor = false;
+            int index = Char.getIntValue(ch);
+            if(index != -1 && index != 0)
+            {
+                if(!this.equipArmor(index - 1))
+                {
+                    Creature.infoText = "Cannot wear item in index " + Integer.toString(index);
+                }
+                else
+                {
+                    Creature.infoText = "Equipped armor";
+                }
+            }
+            else
+            {
+                Creature.infoText = "Press w followed by an index in your inventory.";
+            }
+        }
+        if(this.wearSword)
+        {
+            this.wearSword = false;
+            int index = Char.getIntValue(ch);
+            if(index != -1 && index != 0)
+            {
+                if(!this.equipWeapon(index - 1))
+                {
+                    Creature.infoText = "Cannot equip item in index " + Integer.toString(index);
+                }
+                else
+                {
+                    Creature.infoText = "Equipped sword";
+                }
+            }
+            else
+            {
+                Creature.infoText = "Press T followed by an index in your inventory.";
+            }
+        }
+        else if(infoFlag == true){
             displayCommandInfo(ch);
         }
         else if(ch == 'h'){
@@ -99,12 +142,34 @@ public class Player extends Creature{
                 // do nothing
             }
         }
+        else if(ch == 'c')
+        {
+            if(!this.unequipArmor())
+            {
+                Creature.infoText = "Cannot take of armor.  You are not wearing any."; 
+            }
+            else
+            {
+                Creature.infoText = "Unequiped armor";
+            }
+        }
+        else if(ch == 'w')
+        {
+            this.wearArmor = true;
+        }
+        else if(ch == 'T')
+        {
+            this.wearSword = true;
+        }
         else if(ch == 'H')
         {
             infoFlag = true;
         }
         else if(ch == '?'){
             Creature.infoText = "h, l, k, j, i, ?, H, c, d, p, R, T, w, E, 0-9. H <cmd> for more info"; 
+        }
+        else {
+            System.out.println("character " + ch + " entered on the keyboard. Not a valid character");
         }
         
         if(currentArea.isValidMove(proposedX, proposedY))
@@ -148,6 +213,9 @@ public class Player extends Creature{
         }
         else if(ch == 't'){
             Creature.infoText = "This character takes the weapon from the pack";            
+        }
+        else{
+            Creature.infoText = "This character does nothing";  
         }
     }
 }
