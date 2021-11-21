@@ -20,6 +20,8 @@ public class Player extends Creature{
     private boolean infoFlag;
     private boolean wearArmor;
     private boolean wearSword;
+    private boolean endGame;
+    private boolean stopPlayerInput;
 
     public int getScore(){return score;}
 
@@ -60,128 +62,143 @@ public class Player extends Creature{
 
     public void reactToInput(char ch)
     {
-        System.out.println(this.armor);
-        int proposedX = this.posX;
-        int proposedY = this.posY;
-        if(this.wearArmor)
+        if(!stopPlayerInput)
         {
-            this.wearArmor = false;
-            int index = Char.getIntValue(ch);
-            if(index != -1 && index != 0)
+            int proposedX = this.posX;
+            int proposedY = this.posY;
+            if(endGame)
             {
-                if(!this.equipArmor(index - 1))
+                endGame = false;
+                if(ch == 'y' || ch == 'Y')
                 {
-                    Creature.infoText = "Cannot wear item in index " + Integer.toString(index);
+                    stopPlayerInput = true;
+                    Creature.infoText = "Game ended due to player request";
+                }
+            }
+            else if(this.wearArmor)
+            {
+                this.wearArmor = false;
+                int index = Char.getIntValue(ch);
+                if(index != -1 && index != 0)
+                {
+                    if(!this.equipArmor(index - 1))
+                    {
+                        Creature.infoText = "Cannot wear item in index " + Integer.toString(index);
+                    }
+                    else
+                    {
+                        Creature.infoText = "Equipped armor";
+                    }
                 }
                 else
                 {
-                    Creature.infoText = "Equipped armor";
+                    Creature.infoText = "Press w followed by an index in your inventory.";
                 }
             }
-            else
+            if(this.wearSword)
             {
-                Creature.infoText = "Press w followed by an index in your inventory.";
-            }
-        }
-        if(this.wearSword)
-        {
-            this.wearSword = false;
-            int index = Char.getIntValue(ch);
-            if(index != -1 && index != 0)
-            {
-                if(!this.equipWeapon(index - 1))
+                this.wearSword = false;
+                int index = Char.getIntValue(ch);
+                if(index != -1 && index != 0)
                 {
-                    Creature.infoText = "Cannot equip item in index " + Integer.toString(index);
+                    if(!this.equipWeapon(index - 1))
+                    {
+                        Creature.infoText = "Cannot equip item in index " + Integer.toString(index);
+                    }
+                    else
+                    {
+                        Creature.infoText = "Equipped sword";
+                    }
                 }
                 else
                 {
-                    Creature.infoText = "Equipped sword";
+                    Creature.infoText = "Press T followed by an index in your inventory.";
                 }
             }
-            else
+            else if(infoFlag == true){
+                displayCommandInfo(ch);
+            }
+            else if(ch == 'h'){
+                //Move left
+                proposedX--;
+            }
+            else if(ch == 'l'){
+                // move right
+                proposedX++;
+            }
+            else if(ch == 'k'){
+                //move up
+                proposedY--;
+            }
+            else if(ch == 'j'){
+                //move down
+                proposedY++;
+            }
+            else if(ch == 'p')
             {
-                Creature.infoText = "Press T followed by an index in your inventory.";
+                currentArea.pickUpItem(posX, posY);
             }
-        }
-        else if(infoFlag == true){
-            displayCommandInfo(ch);
-        }
-        else if(ch == 'h'){
-            //Move left
-            proposedX--;
-        }
-        else if(ch == 'l'){
-            // move right
-            proposedX++;
-        }
-        else if(ch == 'k'){
-            //move up
-            proposedY--;
-        }
-        else if(ch == 'j'){
-            //move down
-            proposedY++;
-        }
-        else if(ch == 'p')
-        {
-            System.out.println("ya");
-            currentArea.pickUpItem(posX, posY);
-        }
-        else if(ch == 'd')
-        {
-            if(this.creatureItems.size() > 0)
+            else if(ch == 'd')
             {
-                // Note there may be bugs with displaying absolute position of items.  remains untested.
-                Item toDrop = this.creatureItems.remove(0);
-                toDrop.setPosX(this.posX);
-                toDrop.setPosY(this.posY);
-                currentArea.addItem(toDrop);
+                if(this.creatureItems.size() > 0)
+                {
+                    // Note there may be bugs with displaying absolute position of items.  remains untested.
+                    Item toDrop = this.creatureItems.remove(0);
+                    toDrop.setPosX(this.posX);
+                    toDrop.setPosY(this.posY);
+                    currentArea.addItem(toDrop);
+                }
+                else
+                {
+                    // do nothing
+                }
             }
-            else
+            else if(ch == 'c')
             {
-                // do nothing
+                if(!this.unequipArmor())
+                {
+                    Creature.infoText = "Cannot take of armor.  You are not wearing any."; 
+                }
+                else
+                {
+                    Creature.infoText = "Unequiped armor";
+                }
             }
-        }
-        else if(ch == 'c')
-        {
-            if(!this.unequipArmor())
+            else if(ch == 'w')
             {
-                Creature.infoText = "Cannot take of armor.  You are not wearing any."; 
+                this.wearArmor = true;
             }
-            else
+            else if(ch == 'T')
             {
-                Creature.infoText = "Unequiped armor";
+                this.wearSword = true;
             }
-        }
-        else if(ch == 'w')
-        {
-            this.wearArmor = true;
-        }
-        else if(ch == 'T')
-        {
-            this.wearSword = true;
-        }
-        else if(ch == 'H')
-        {
-            infoFlag = true;
-        }
-        else if(ch == '?'){
-            Creature.infoText = "h, l, k, j, i, ?, H, c, d, p, R, T, w, E, 0-9. H <cmd> for more info"; 
-        }
-        else {
-            System.out.println("character " + ch + " entered on the keyboard. Not a valid character");
-        }
-        
-        if(currentArea.isValidMove(proposedX, proposedY))
-        // if(true)
-        {
-            if(proposedX != posX || proposedY != posY){
-                this.incrementCount();
+            else if(ch == 'E')
+            {
+                Creature.infoText = "To end the game press y/Y.  Any other character to continue";
+                this.endGame = true;
             }
-            this.posX = proposedX;
-            this.posY = proposedY;
+            else if(ch == 'H')
+            {
+                infoFlag = true;
+            }
+            else if(ch == '?'){
+                Creature.infoText = "h, l, k, j, i, ?, H, c, d, p, R, T, w, E, 0-9. H <cmd> for more info"; 
+            }
+            else {
+                System.out.println("character " + ch + " entered on the keyboard. Not a valid character");
+            }
+            
+            if(currentArea.isValidMove(proposedX, proposedY))
+            // if(true)
+            {
+                if(proposedX != posX || proposedY != posY){
+                    this.incrementCount();
+                }
+                this.posX = proposedX;
+                this.posY = proposedY;
+            }
+            checkMoves(); // bc
         }
-        checkMoves(); // bc
     }
 
     private void displayCommandInfo(char ch)

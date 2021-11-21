@@ -64,7 +64,7 @@ public class KeyStrokePrinter implements InputObserver, Runnable {
                 //     return false;
                 // } 
                 if(ch == 'h' || ch == 'l' || ch == 'k' || ch == 'j' || ch == 'p' || ch == 'd'
-                || ch == 'H' || ch =='E' || ch =='?' || ch =='i' || ch =='r' || ch =='T'
+                || ch == 'H' || ch =='E' || ch =='?' || ch =='i' || ch =='r' || ch =='T' || ch == 'y' || ch == 'Y'
                 || ch =='w'|| ch =='c' || ch == '0' || ch == '1' || ch == '2' || ch == '3' || ch == '4' || ch == '5' || ch == '6' || ch == '7' || ch == '8' || ch == '9')
                 {
                     player.reactToInput(ch);
@@ -81,9 +81,9 @@ public class KeyStrokePrinter implements InputObserver, Runnable {
                 // else if(ch == 'd'){
                 //     //drop item
                 // }
-                // else {
-                //     System.out.println("character " + ch + " entered on the keyboard. Not a valid character");
-                // }
+                else {
+                    System.out.println("character " + ch + " entered on the keyboard. Not a valid character");
+                }
 
             }
         }
