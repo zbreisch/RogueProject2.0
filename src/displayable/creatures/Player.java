@@ -175,6 +175,9 @@ public class Player extends Creature{
         if(currentArea.isValidMove(proposedX, proposedY))
         // if(true)
         {
+            if(proposedX != posX || proposedY != posY){
+                this.incrementCount();
+            }
             this.posX = proposedX;
             this.posY = proposedY;
         }

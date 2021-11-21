@@ -222,14 +222,14 @@ public class Room extends Displayable implements PlayerArea{ //Added
                     Player.setPlayerArea(this.passages.get(i));
                     passages.get(i).setPlayer(player);
                     this.creatures.remove(player);
-                    player.incrementCount(); // BC        
+                    //player.incrementCount(); // BC        
                     return true;
                 }
             }
             return false;
         }
         else
-            player.incrementCount(); // BC
+            //player.incrementCount(); // BC
             return true;
     }
 }
