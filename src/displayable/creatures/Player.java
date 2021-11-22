@@ -22,8 +22,11 @@ public class Player extends Creature{
     private boolean wearSword;
     private boolean endGame;
     private boolean stopPlayerInput;
+    private String strPack;
 
     public int getScore(){return score;}
+
+    private String strPackCon;
 
     // public void setGridPosX(int x, Room r){gridPosX = x;}
     // public void setGridPosY(int y, Room r){gridPosY = y;}
@@ -35,11 +38,11 @@ public class Player extends Creature{
 
     public String getBottomText()
     {
-        String str = "Pack: ";
+        String str = "Pack:";
         for(Item i : this.creatureItems)
         {
             // System.out.println(i.getName());
-            str += i.getName();
+            str += " " + i.getName();
         }
         str += "\nInfo: ";
         str += Creature.infoText;
@@ -184,8 +187,42 @@ public class Player extends Creature{
             else if(ch == '?'){
                 Creature.infoText = "h, l, k, j, i, ?, H, c, d, p, R, T, w, E, 0-9. H <cmd> for more info"; 
             }
+            else if(ch == 'i'){
+                
+                int zach = 1;
+                strPackCon = "";
+
+                if(this.weapon != null){
+                    strPackCon += Integer.toString(zach) + ") " + this.weapon.getName() + " (w) ";
+                    zach ++;
+                }
+                if(this.armor != null){
+                    strPackCon += Integer.toString(zach) + ") " + this.armor.getName() + " (a) ";
+                    zach ++;
+
+                }
+                
+                for(Item i : this.creatureItems)
+                {
+                    strPackCon += Integer.toString(zach) + ") "+ i.getName() + " ";
+                    zach ++;
+                }
+                
+                if(strPackCon != null){
+                    Creature.infoText = strPackCon;
+                }
+                else{
+                    Creature.infoText = "The pack is empty";
+                }
+            }
+
             else {
-                System.out.println("character " + ch + " entered on the keyboard. Not a valid character");
+                    // if(ch != 'h' || ch != 'l' || ch != 'k' || ch != 'j' || ch != 'p' || ch != 'd'
+                    // || ch != 'H' || ch !='E' || ch !='?' || ch !='i' || ch !='r' || ch !='T' || ch != 'y' || ch != 'Y'
+                    // || ch !='w'|| ch !='c' || ch != '0' || ch != '1' || ch != '2' || ch != '3' || ch != '4' || ch != '5' || ch != '6' || ch != '7' || ch != '8' || ch != '9')
+                    // {
+                    // Creature.infoText = "character " + ch + " entered on the keyboard. Not a valid character";
+                    // }
             }
             
             if(currentArea.isValidMove(proposedX, proposedY))

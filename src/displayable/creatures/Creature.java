@@ -5,8 +5,6 @@ import src.displayable.item.*;
 
 import java.util.*;
 
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MoveAction;
-
 public class Creature extends Displayable{
    protected Armor armor;
    protected Sword weapon;
@@ -21,12 +19,9 @@ public class Creature extends Displayable{
    private int maxHit;
    private String type;
    static protected String infoText = "";
-//    private List<Action> creatureActions = new ArrayList<Action>(); 
-   private List<Action> hitActions = new ArrayList<Action>();
-   private List<Action> deathActions = new ArrayList<Action>();
-   private List<Action> moveActions = new ArrayList<Action>();
+   private List<Action> creatureActions = new ArrayList<Action>(); 
+   protected List<Item> creatureItems = new ArrayList<Item>(); // TO DO: Finish this
 
-   protected List<Item> creatureItems = new ArrayList<Item>(); 
 
    public int getPosX(){return this.posX;}
    public int getPosY(){return this.posY;}
@@ -162,22 +157,7 @@ public class Creature extends Displayable{
 
    public void setType(String _type){type = _type;}
 
-    public void addCreatureAction(Action a)
-    {
-        if(a.getType() == "death")
-        {
-            deathActions.add(a);
-        }
-        else if(a.getType() == "hit")
-        {
-            hitActions.add(a);
-        }
-        else if(a.getType() == "move")
-        {
-            moveActions.add(a);
-        }
-        // creatureActions.add(a);
-    }
+   public void addCreatureAction(Action a) {creatureActions.add(a);}
 
    public void addItem(Item i) {creatureItems.add(i);}
 

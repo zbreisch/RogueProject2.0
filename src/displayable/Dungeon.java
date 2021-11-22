@@ -9,6 +9,7 @@ import java.util.*;
 
 // cd src;rm *.class;rm displayable/*.class;rm action/*.class;rm displayable/creatures/*.class;rm displayable/structure/*.class;rm displayable/item/*.class;cd..
 // javac src/Rogue.java;java src/Rogue.java testdrawing.xml
+// javac src/Rogue.java;java src/Rogue.java droppack.xml
 public class Dungeon {
     private String name;
     private int width;
