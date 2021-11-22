@@ -8,6 +8,7 @@ public class Action {
     private char actionCharValue;
 
     public void setName(String _name) {name = _name;}
+    public String getType(){return this.type}
 
     public void setType(String _type) {type = _type;}
 

@@ -3,7 +3,15 @@ package src;
 // import src.action.creatureAction.PlayerAction.*;
 // import src.action.creatureAction.*;
 // import src.action.itemAction.*;
-import src.action.Action;
+import src.action.*;
+import src.action.creatureAction.PlayerAction.ChangeDisplayType;
+import src.action.creatureAction.PlayerAction.DropPack;
+import src.action.creatureAction.PlayerAction.EmptyPack;
+import src.action.creatureAction.PlayerAction.EndGame;
+import src.action.creatureAction.PlayerAction.Remove;
+import src.action.creatureAction.PlayerAction.Teleport;
+import src.action.creatureAction.PlayerAction.UpdateDisplay;
+import src.action.creatureAction.PlayerAction.YouWin;
 import src.displayable.creatures.*;
 import src.displayable.item.*;
 import src.displayable.structure.*;
@@ -151,8 +159,17 @@ public class DungeonXMLHandler extends DefaultHandler {
             roomBeingParsed.addCreature(creatureBeingParsed);
         
         } else if (qName.equalsIgnoreCase("CreatureAction")) {
-            actionBeingParsed = new Action();
-            actionBeingParsed.setName(attributes.getValue("name"));
+            String actionName = attributes.getValue("name");
+            if(actionName == "ChangeDisplayType"){actionBeingParsed = new ChangeDisplayType();}
+            else if(actionName == "Remove"){actionBeingParsed = new Remove();}
+            else if(actionName == "Teleport"){actionBeingParsed = new Teleport();}
+            else if(actionName == "UpdateDisplay"){actionBeingParsed = new UpdateDisplay();}
+            else if(actionName == "YouWin"){actionBeingParsed = new YouWin();}
+            else if(actionName == "DropPack"){actionBeingParsed = new DropPack();}
+            else if(actionName == "EmptyPack"){actionBeingParsed = new EmptyPack();}
+            else if(actionName == "EndGame"){actionBeingParsed = new EndGame();}
+            else{actionBeingParsed = new Action();}
+            actionBeingParsed.setName(actionName);
             actionBeingParsed.setType(attributes.getValue("type"));
             creatureBeingParsed.addCreatureAction(actionBeingParsed);
             bAction = true;
